@@ -12,6 +12,12 @@ import (
 	"github.com/Stride-Labs/stride/v4/x/stakeibc/types"
 )
 
+/**
+ * 여기서 MsgLiquidStake 메시지에
+ * Creator 는 Sender 지갑,
+ * Amount 는 Coin 수량 (Denom 단위로...)
+ * HostDenom 은 ATOM 은 uatom EVMOS 는 uemovs 등 이렇게 시작되는 거 같음
+ */
 func (k msgServer) LiquidStake(goCtx context.Context, msg *types.MsgLiquidStake) (*types.MsgLiquidStakeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -19,8 +25,11 @@ func (k msgServer) LiquidStake(goCtx context.Context, msg *types.MsgLiquidStake)
 	// deposit `amount` of `denom` token to the stakeibc module
 	// NOTE: Should we add an additional check here? This is a pretty important line of code
 	// NOTE: If sender doesn't have enough inCoin, this errors (error is hard to interpret)
-	// check that hostZone is registered
-	// strided tx stakeibc liquid-stake 100 uatom
+
+
+	// strided tx stakeibc liquid-stake 100 uatom <--- 여기 CLI 로 예시가 있네
+
+	// check that hostZone is registered (사전에 등록된 HostZone)
 	hostZone, err := k.GetHostZoneFromHostDenom(ctx, msg.HostDenom)
 	if err != nil {
 		k.Logger(ctx).Error(fmt.Sprintf("Host Zone not found for denom (%s)", msg.HostDenom))
